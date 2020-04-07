@@ -10,20 +10,20 @@ import RealmSwift
 import EasyRealm
 
 class TestSave: XCTestCase {
-  
-  let testPokemon = ["Bulbasaur", "Ivysaur", "Venusaur","Charmander","Charmeleon","Charizard"]
-  
+
+  let testPokemon = ["Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard"]
+
   override func setUp() {
     super.setUp()
     Realm.Configuration.defaultConfiguration.inMemoryIdentifier = self.name
   }
-  
+
   override func tearDown() {
     super.tearDown()
     let realm = try! Realm()
     try! realm.write { realm.deleteAll() }
   }
-  
+
   func testSaveUnmanaged() {
     HelpPokemon.pokemons(with: self.testPokemon).forEach { try! $0.er.save(update: true) }
     HelpPokemon.pokemons(with: self.testPokemon).forEach { try! $0.er.save(update: true) }
@@ -41,7 +41,7 @@ class TestSave: XCTestCase {
     let managedPokemon = testPokemon.flatMap { try! Pokemon.er.fromRealm(with: $0) }
     managedPokemon.forEach { try! $0.er.save(update: true) }
   }
-  
+
   func testMeasureSaveUnmanaged() {
     self.measure {
       try! Pokeball.create().er.save()
@@ -56,11 +56,10 @@ class TestSave: XCTestCase {
     }
   }
 
-
   func testSaveLotOfComplexObject() {
     for _ in 0...10000 {
       try! HelpPokemon.generateCapturedRandomPokemon().er.save(update: true)
     }
   }
-  
+
 }

@@ -10,18 +10,17 @@ import Foundation
 import Realm
 import RealmSwift
 
-extension EasyRealm where T:Object {
-  
-  public func edit(_ closure: @escaping (_ T:T) -> Void) throws {
+extension EasyRealm where T: Object {
+
+  public func edit(_ closure: @escaping (_ T: T) -> Void) throws {
     self.isManaged ? try managed_edit(closure) : try unmanaged_dit(closure)
   }
-  
+
 }
 
+fileprivate extension EasyRealm where T: Object {
 
-fileprivate extension EasyRealm where T:Object {
-
-  fileprivate func managed_edit(_ closure: @escaping (_ T:T) -> Void) throws {
+  func managed_edit(_ closure: @escaping (_ T: T) -> Void) throws {
     guard let rq = EasyRealmQueue() else { throw EasyRealmError.RealmQueueCantBeCreate }
     let ref = ThreadSafeReference(to: self.base)
     try rq.queue.sync {
@@ -29,8 +28,8 @@ fileprivate extension EasyRealm where T:Object {
       try rq.realm.write { closure(object) }
     }
   }
-  
-  fileprivate func unmanaged_dit(_ closure: @escaping (_ T:T) -> Void) throws  {
+
+  func unmanaged_dit(_ closure: @escaping (_ T: T) -> Void) throws {
     closure(self.base)
   }
 }

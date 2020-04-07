@@ -5,13 +5,11 @@
 //  Created by Allan Vialatte on 10/03/2017.
 //
 
-
 import Foundation
 
-
 struct HelpPokemon {
-  
-  static func pokemons(with names:[String]) -> [Pokemon] {
+
+  static func pokemons(with names: [String]) -> [Pokemon] {
     return names.flatMap {
       let pokemon = Pokemon()
       pokemon.name = $0
@@ -19,14 +17,14 @@ struct HelpPokemon {
       return pokemon
     }
   }
-  
+
   static func generateRandomPokemon() -> Pokemon {
     let pokemon = Pokemon()
     pokemon.name = allPokemonName[Int(arc4random()) % allPokemonName.count]
     pokemon.level = Int(arc4random()) % 100
     return pokemon
   }
-  
+
   static func generateCapturedRandomPokemon() -> Pokemon {
     let pokemon = Pokemon()
     pokemon.name = allPokemonName[Int(arc4random()) % allPokemonName.count]
@@ -34,7 +32,7 @@ struct HelpPokemon {
     pokemon.pokeball = Pokeball.create()
     return pokemon
   }
-  
+
   static func allPokedex() -> [Pokemon] {
     return allPokemonName.flatMap {
       let pokemon = Pokemon()
@@ -43,8 +41,7 @@ struct HelpPokemon {
       return pokemon
     }
   }
-  
-  
+
   static let allPokemonName = [
     "Bulbasaur",
     "Ivysaur",

@@ -9,14 +9,13 @@
 import Foundation
 import RealmSwift
 
-
 internal struct EasyRealmQueue {
-  let realm:Realm
-  let queue:DispatchQueue
-  
+  let realm: Realm
+  let queue: DispatchQueue
+
   init?() {
     queue = DispatchQueue(label: UUID().uuidString)
-    var tmp:Realm? = nil
+    var tmp: Realm?
     queue.sync { tmp = try? Realm() }
     guard let valid = tmp else { return nil }
     self.realm = valid

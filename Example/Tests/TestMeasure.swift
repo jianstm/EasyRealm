@@ -11,18 +11,18 @@ import RealmSwift
 import EasyRealm
 
 class TestMeasure: XCTestCase {
-    
+
   override func setUp() {
     super.setUp()
     Realm.Configuration.defaultConfiguration.inMemoryIdentifier = self.name
   }
-  
+
   override func tearDown() {
     super.tearDown()
     let realm = try! Realm()
     try! realm.write { realm.deleteAll() }
   }
-  
+
   // Traditional Way
 
   func testCreateAndSave() {
@@ -38,9 +38,9 @@ class TestMeasure: XCTestCase {
       }
     }
   }
-  
+
   // Easy Realm Way
-  
+
   func testERCreateAndSave() {
     self.measure {
       let trainer = Trainer()
@@ -50,17 +50,17 @@ class TestMeasure: XCTestCase {
       try! trainer.er.save(update: true)
     }
   }
-  
+
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
-    
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
         }
     }
-    
+
 }

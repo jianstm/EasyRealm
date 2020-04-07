@@ -8,18 +8,17 @@
 
 import RealmSwift
 
-
 public final class EasyRealm<T> {
   internal var base: T
-  
+
   public init(_ instance: T) {
     self.base = instance
   }
 }
 
 public final class EasyRealmStatic<T> {
-  internal var baseType:T.Type
-  
+  internal var baseType: T.Type
+
   public init(_ instance: T.Type) {
     self.baseType = instance
   }
@@ -32,13 +31,12 @@ public protocol EasyRealmCompatible {
 }
 
 public extension EasyRealmCompatible {
-  public var er: EasyRealm<Self> {
+  var er: EasyRealm<Self> {
     get { return EasyRealm(self) }
   }
-  public static var er: EasyRealmStatic<Self> {
+  static var er: EasyRealmStatic<Self> {
     get { return EasyRealmStatic(Self.self) }
   }
 }
 
-
-extension Object:EasyRealmCompatible {}
+extension Object: EasyRealmCompatible {}

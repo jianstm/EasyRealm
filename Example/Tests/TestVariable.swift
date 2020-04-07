@@ -5,27 +5,25 @@
 //  Created by Allan Vialatte on 10/03/2017.
 //
 
-
 import XCTest
 import RealmSwift
 import EasyRealm
 
 class TestVariable: XCTestCase {
-  
-  
-  let testPokemon = ["Bulbasaur", "Ivysaur", "Venusaur","Charmander","Charmeleon","Charizard"]
-  
+
+  let testPokemon = ["Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard"]
+
   override func setUp() {
     super.setUp()
     Realm.Configuration.defaultConfiguration.inMemoryIdentifier = self.name
   }
-  
+
   override func tearDown() {
     super.tearDown()
     let realm = try! Realm()
     try! realm.write { realm.deleteAll() }
   }
-  
+
   func testIsManaged() {
     HelpPokemon.pokemons(with: self.testPokemon).forEach { try! $0.er.save(update: true) }
     var pokemon = HelpPokemon.pokemons(with: [self.testPokemon[0]]).first!
@@ -35,7 +33,7 @@ class TestVariable: XCTestCase {
     }
     XCTAssertTrue(pokemon.er.isManaged)
   }
-  
+
   func testManaged() {
     let pokemon = HelpPokemon.generateCapturedRandomPokemon()
     try! pokemon.er.edit {
@@ -49,14 +47,14 @@ class TestVariable: XCTestCase {
     XCTAssertEqual(managed?.pokeball?.branding, "Masterball")
 
   }
-  
+
   func testUnManaged() {
     let pokemon = HelpPokemon.generateCapturedRandomPokemon()
     try! pokemon.er.edit {
       $0.pokeball?.branding = "Masterball"
     }
     try! pokemon.er.save(update: true)
-    
+
     let managed = pokemon.er.managed
     XCTAssertNotNil(managed)
     XCTAssertTrue(managed?.er.isManaged ?? false)
@@ -67,18 +65,17 @@ class TestVariable: XCTestCase {
     XCTAssertFalse(unmnaged.er.isManaged)
     XCTAssertEqual(unmnaged.pokeball?.branding, "Masterball")
   }
-  
+
   func testComplexObject() {
     let trainer = Trainer()
     let pokedex = Pokedex()
     trainer.pokemons.append(HelpPokemon.generateCapturedRandomPokemon())
     trainer.pokedex = pokedex
-    
+
     trainer.pokemons.forEach {
       $0.specialBoost.value = 42
     }
 
-    
     try! trainer.er.save(update: true)
     let managed = trainer.er.managed!
     XCTAssertTrue(managed.er.isManaged)
@@ -88,7 +85,7 @@ class TestVariable: XCTestCase {
       XCTAssertTrue($0.er.isManaged)
       XCTAssertEqual($0.specialBoost.value!, 42)
     }
-    
+
     let unmanaged = managed.er.unmanaged
     XCTAssertFalse(unmanaged.er.isManaged)
     XCTAssertFalse(unmanaged.pokedex!.er.isManaged)
@@ -98,6 +95,5 @@ class TestVariable: XCTestCase {
       XCTAssertEqual($0.specialBoost.value!, 42)
     }
   }
-  
-  
+
 }

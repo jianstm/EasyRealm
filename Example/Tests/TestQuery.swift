@@ -11,18 +11,18 @@ import RealmSwift
 import EasyRealm
 
 class TestQuery: XCTestCase {
-    
+
   override func setUp() {
     super.setUp()
     Realm.Configuration.defaultConfiguration.inMemoryIdentifier = self.name
   }
-  
+
   override func tearDown() {
     super.tearDown()
     let realm = try! Realm()
     try! realm.write { realm.deleteAll() }
   }
-  
+
   func testQueryError() {
     if let firstPokemonName = HelpPokemon.allPokemonName.first {
       do {
@@ -36,6 +36,5 @@ class TestQuery: XCTestCase {
       }
     }
   }
-  
-  
+
 }

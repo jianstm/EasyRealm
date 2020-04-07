@@ -9,25 +9,25 @@
 import Foundation
 import RealmSwift
 
-extension EasyRealm where T:Object {
-  
-  public func save(update:Bool = false) throws {
-    let _ = try self.saved(update: update)
+extension EasyRealm where T: Object {
+
+  public func save(update: Bool = false) throws {
+    _ = try self.saved(update: update)
   }
-  
-  public func saved(update:Bool = false) throws -> T {
+
+  public func saved(update: Bool = false) throws -> T {
     return (self.isManaged) ? try managed_save(update: update) : try unmanaged_save(update: update)
   }
-  
+
   public func update() throws {
-    let _ = (self.isManaged) ? try managed_save(update: true) : try unmanaged_save(update: true)
+    _ = (self.isManaged) ? try managed_save(update: true) : try unmanaged_save(update: true)
   }
-  
+
 }
 
 fileprivate extension EasyRealm where T: Object {
-  
-  fileprivate func managed_save(update:Bool) throws -> T {
+
+  func managed_save(update: Bool) throws -> T {
     let ref = ThreadSafeReference(to: self.base)
     guard let rq = EasyRealmQueue() else {
       throw EasyRealmError.RealmQueueCantBeCreate
@@ -40,13 +40,13 @@ fileprivate extension EasyRealm where T: Object {
       return ret
     }
   }
-  
-  fileprivate func unmanaged_save(update:Bool) throws -> T {
+
+  func unmanaged_save(update: Bool) throws -> T {
     let realm = try Realm()
     realm.beginWrite()
     let ret = realm.create(T.self, value: self.base, update: .all)
     try realm.commitWrite()
     return ret
   }
-  
+
 }

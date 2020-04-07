@@ -10,27 +10,26 @@ import RealmSwift
 import EasyRealm
 
 class TestEdit: XCTestCase {
-  
-  let testPokemon = ["Bulbasaur", "Ivysaur", "Venusaur","Charmander","Charmeleon","Charizard"]
-  
-  
+
+  let testPokemon = ["Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard"]
+
   override func setUp() {
     super.setUp()
     Realm.Configuration.defaultConfiguration.inMemoryIdentifier = self.name
   }
-  
+
   override func tearDown() {
     super.tearDown()
     let realm = try! Realm()
     try! realm.write { realm.deleteAll() }
   }
-  
+
   func testEditUnmanaged() {
     let pokemons = HelpPokemon.pokemons(with: self.testPokemon)
     pokemons.forEach { try! $0.er.edit { $0.level = 42 } }
     pokemons.forEach { XCTAssertEqual($0.level, 42) }
   }
-  
+
   func testSaveManaged() {
     HelpPokemon.pokemons(with: self.testPokemon).forEach { try! $0.er.save(update: true) }
     let pokemons = try! Pokemon.er.all()
@@ -40,5 +39,5 @@ class TestEdit: XCTestCase {
       XCTAssertEqual($0.level, 42)
     }
   }
-  
+
 }
